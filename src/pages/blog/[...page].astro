@@ -1,32 +1,34 @@
 ---
-import type { GetStaticPathsOptions, Page } from 'astro';
-import { type CollectionEntry, getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Pagination from '../../components/Pagination.astro';
-import PostPreview from '../../components/PostPreview.astro';
-import Subscribe from '../../components/Subscribe.astro';
-import siteConfig from '../../data/site-config';
-import { sortItemsByDateDesc } from '../../utils/data-utils';
+import type { GetStaticPathsOptions, Page } from 'astro'
+import { type CollectionEntry, getCollection } from 'astro:content'
+import Pagination from '../../components/Pagination.astro'
+import Subscribe from '../../components/Subscribe.astro'
+import WorkBlogPreview from '../../components/WorkBlogPreview.astro'
+import siteConfig from '../../data/site-config'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { sortItemsByDateDesc } from '../../utils/data-utils'
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-    const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
-    return paginate(posts, { pageSize: siteConfig.postsPerPage || 4 });
+    const posts = (await getCollection('blog')).sort(sortItemsByDateDesc)
+    return paginate(posts, { pageSize: siteConfig.postsPerPage || 4 })
 }
 
-type Props = { page: Page<CollectionEntry<'blog'>> };
+type Props = { page: Page<CollectionEntry<'blog'>> }
 
-const { page } = Astro.props;
-const blog = page.data;
+const { page } = Astro.props
+const blog = page.data
+const postsPerPage = siteConfig.postsPerPage || 4
+const optinFormActive = siteConfig.subscribe?.active || false
 ---
 
 <BaseLayout
-    title="Blog"
-    description="Embark on a journey of personal insights and experiences through my blog"
-    image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }}
-    showHeader={false}
+    title="Work blog"
+    description="Real stories from marketing and growth. Frameworks, mistakes, and what I've picked up along the way building, consulting, and scaling online businesses across industries and markets."
+    image={{ src: '', alt: '' }}
 >
-    <h1 class="mb-12 text-2xl leading-tight font-serif italic sm:mb-16 sm:text-4xl">Blog Archive</h1>
-    {blog.map((post) => <PostPreview post={post} class="mb-10 sm:mb-12" />)}
-    <Pagination page={page} class="my-16 sm:my-24" />
-    <Subscribe class="my-16 sm:my-24" />
+    <h1 class="mb-12 text-2xl leading-tight font-serif italic sm:mb-16 sm:text-4xl">Work blog</h1>
+    <p>There's nothing here yet. Maybe come back in a few days?</p>
+    {blog.map((post) => <WorkBlogPreview post={post} class="mb-10 sm:mb-12" />)}
+    {blog.length > postsPerPage && <Pagination page={page} class="my-16 sm:my-24" />}
+    {optinFormActive && <Subscribe class="my-16 sm:my-24" />}
 </BaseLayout>

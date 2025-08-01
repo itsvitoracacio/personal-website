@@ -89,7 +89,7 @@ html.dark {
     }
 
     .prose :where(code, strong) {
-        @apply font-medium;
+        @apply font-semibold;
     }
 
     .prose blockquote {

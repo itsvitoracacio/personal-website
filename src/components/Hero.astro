@@ -1,29 +1,41 @@
 ---
-import { marked } from 'marked';
-import siteConfig from '../data/site-config';
-import Button from './Button.astro';
+import { Image } from 'astro:assets'
+import { marked } from 'marked'
+import profilePic from '../assets/vitor-profile.jpeg' // Your image path
 
-const hero = siteConfig.hero;
+const hero = {
+    image: {
+        src: profilePic,
+        alt: 'Vitor sorrindo: brasileiro de pele em tons médios, cabelo e barba escuros, óculos de armação grossa, sorrindo em ambiente interno.'
+    },
+    title: "Hi, I'm Vitor! I feed growth engines and three cats.",
+    text: [
+        "I'm currently leading the international expansion at Circle, drawing on 10+ years of marketing experience with online businesses — from eCommerce and membership platforms to B2B SaaS.",
+        "Here, I document the playbooks and decision-making behind scaling across 20+ countries — market prioritization, cross-functional coordination, and systematic approaches to business growth. I also offer free consulting sessions (that are recorded and made public), <a href='/blog'>share insights from what I'm learning</a>, and host bi-weekly office hours for Brazilian tech professionals.",
+        "When I'm not geeking out about all this, I'm usually listening to rap music or studying political history.",
+        "Always happy to help with marketing strategy, data analysis, basic web dev, or anything else I might have picked up along the way. The best way to reach me is <a href='https://linkedin.com/in/itsvitoracacio'>through LinkedIn</a>."
+    ],
+    actions: []
+}
 ---
 
 {
     (hero?.title || hero?.image?.src || hero?.text || (hero?.actions && hero.actions.length > 0)) && (
-        <section class="w-full flex flex-col gap-8 mb-16 sm:mb-24">
-            {hero.title && <h1 class="text-3xl leading-tight font-serif font-medium sm:text-5xl sm:leading-tight">{hero.title}</h1>}
-            {hero.image?.src && (
-                <figure>
-                    <img class="w-full" src={hero.image.src} loading="lazy" decoding="async" alt={hero.image.alt || ''} />
-                    {hero.image.caption && <figcaption class="mt-1.5 text-xs sm:text-sm">{hero.image.caption}</figcaption>}
-                </figure>
+        <section class="w-full flex flex-col gap-8 mb-16">
+            <div class="flex flex-col sm:flex-row gap-8 items-start sm:items-center">
+                <Image src={hero.image.src} alt={hero.image.alt} width={150} height={150} class="h-full rounded-full" />
+                {hero.title && <h1 class="text-3xl leading-tight font-serif font-medium sm:text-5xl sm:leading-tight">{hero.title}</h1>}
+            </div>
+            {hero.text && hero.text.length > 0 && (
+                <div class="max-w-none prose sm:prose-lg" set:html={hero.text.map((text) => `<p>${marked.parseInline(text)}</p>`).join('')} />
             )}
-            {hero.text && <div class="max-w-none prose sm:prose-lg" set:html={marked.parse(hero.text)} />}
-            {hero.actions && hero.actions.length > 0 && (
+            {/* {hero.actions && hero.actions.length > 0 && (
                 <div class="flex flex-wrap gap-4">
                     {hero.actions.map((action) => (
                         <Button href={action.href}>{action.text}</Button>
                     ))}
                 </div>
-            )}
+            )} */}
         </section>
     )
 }

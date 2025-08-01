@@ -1,7 +1,7 @@
 ---
-title: About
+title: What I'm up to now
 seo:
-  title: About Me
+  title: What I'm up to now
   description: Learn more about the person behind the website and embark on a journey of inspiration and shared experiences.
   image:
     src: '/about.jpeg'
